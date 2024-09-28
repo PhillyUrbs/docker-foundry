@@ -5,6 +5,7 @@ services:
     network_mode: bridge
     environment:
       - TZ=America/New_York
+      - SERVER_PWD=${SERVER_PASS}
       - SERVER_NAME='Llama Love'
       - PAUSE_SERVER_WHEN_EMPTY=false
       - MAX_TRANSFER_RATE=8192

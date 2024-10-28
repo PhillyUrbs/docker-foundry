@@ -16,3 +16,5 @@ services:
       - '3724:3724/udp'
       - '27015:27015/udp'
     restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"

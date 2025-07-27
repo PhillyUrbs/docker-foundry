@@ -74,14 +74,14 @@ echo " "
 if [ -n "$NO_CRON" ]; then
     echo "No Cron image used!"
 else
-    doas -u root crond
+    sudo -u root cron
 
     if [ "$BACKUPS" = false ]; then
         echo "[IMPORTANT] Backups are disabled!"
-        doas -u root sed -i "/backup.sh/c # 0 * * * * /home/foundry/scripts/backup.sh 2>&1" /var/spool/cron/crontabs/root
+        sudo -u root sed -i "/backup.sh/c # 0 * * * * /home/foundry/scripts/backup.sh 2>&1" /var/spool/cron/crontabs/root
     elif [ -n "$BACKUP_INTERVAL" ]; then
         echo "Changing backup interval to $BACKUP_INTERVAL"
-        doas -u root sed -i "/backup.sh/c $BACKUP_INTERVAL /home/foundry/scripts/backup.sh 2>&1" /var/spool/cron/crontabs/root
+        sudo -u root sed -i "/backup.sh/c $BACKUP_INTERVAL /home/foundry/scripts/backup.sh 2>&1" /var/spool/cron/crontabs/root
     fi
 fi
 
@@ -103,9 +103,14 @@ if [ -d $server_files/Mods ]; then
     mkdir -p $server_files/Mods 2>/dev/null
 fi
 
+if [ "$ENABLE_MODS" = true ]; then
+    echo "Download mods..."
+    source ./scripts/download_mods.sh
+fi
+
 cd "$server_files"
 echo "Starting Foundry Dedicated Server"
 echo " "
 echo "Launching wine Foundry"
 echo " "
-xvfb-run wine $server_files/FoundryDedicatedServer.exe -log 2>&1
+source /home/foundry/scripts/wrapper.sh

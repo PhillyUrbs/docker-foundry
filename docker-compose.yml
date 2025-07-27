@@ -5,10 +5,14 @@ services:
     network_mode: bridge
     environment:
       - TZ=America/New_York
+      - WORLD_NAME='Llama Land'
       - SERVER_PWD=${SERVER_PASS}
       - SERVER_NAME='Llama Love'
       - PAUSE_SERVER_WHEN_EMPTY=false
       - MAX_TRANSFER_RATE=8192
+      - BACKUPS=true
+      - BACKUP_INTERVAL=0 * * * * # Every hour at minute 0
+      - BACKUP_RETENTION=3 # Keep backups older than X days
     volumes:
       - '/home/phil/foundry-server/server-config/server:/home/foundry/server_files_:rw'
       - '/home/phil/foundry-server/server-config/data:/home/foundry/persistent_data:rw'
